@@ -1,4 +1,4 @@
 ---
 galaxy_info:
   author: 'ncsu-lib'
-  description: 'Creates a .env file when provisioning server'
+  description: 'clones a remote database to a local database'
