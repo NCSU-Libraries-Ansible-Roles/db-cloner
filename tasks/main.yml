@@ -1,0 +1,24 @@
+---
+- name: kill the any use of listening port
+  shell: 'ps axuf | grep {{ db_cloner_listening_port }} | grep ssh | awk ''{ print "kill -9 " $1}'''
+
+- name: open ssh tunnel to remote_host
+  become_user: "{{db_cloner_user}}"
+  command: "ssh -fN -L {{ db_cloner_listening_port }}:{{ db_cloner_remote_db_host }}:{{ db_cloner_remote_db_port }} {{ db_cloner_ssh_user }}@{{ db_cloner_remote_host }}"
+
+- name: dump database into local sql file
+  become_user: "{{db_cloner_user}}"
+  shell: "mysqldump --single-transaction -P {{ db_cloner_listening_port }} -h 127.0.0.1 -u {{ db_cloner_remote_db_user }} -p{{ db_cloner_remote_db_pass }} {{ db_cloner_remote_db_name }} > {{ db_cloner_sql_dump_path }}/{{ db_cloner_remote_db_name }}.sql"
+
+- name: kill the ssh tunnel to remote_host
+  shell: 'ps axuf | grep {{ db_cloner_listening_port }} | grep ssh | awk ''{ print "kill -9 " $1}'''
+
+- name: insert the dump into the db
+  mysql_db:
+    name: "{{ db_cloner_local_db_name }}"
+    login_user: "{{ db_cloner_local_db_user }}"
+    login_host: "{{ db_cloner_local_db_host }}"
+    login_password: "{{ db_cloner_local_db_pass }}"
+    config_file: no
+    state: import
+    target: "/vagrant/{{ db_cloner_remote_db_name }}.sql"

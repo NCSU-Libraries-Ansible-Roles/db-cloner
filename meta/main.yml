@@ -1,0 +1,4 @@
+---
+galaxy_info:
+  author: 'ncsu-lib'
+  description: 'Creates a .env file when provisioning server'

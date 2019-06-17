@@ -1,0 +1,22 @@
+---
+db_cloner_user: vagrant
+
+db_cloner_ssh_user: user
+db_cloner_listening_port: 3310
+db_cloner_remote_host: localhost
+
+db_cloner_local_db_user: root
+db_cloner_local_db_pass: secret
+db_cloner_local_db_name: database
+db_cloner_local_db_port: 3306
+db_cloner_local_db_host: 127.0.0.1
+
+db_cloner_remote_db_user: root
+db_cloner_remote_db_pass: secret
+db_cloner_remote_db_name: database
+db_cloner_remote_db_port: 3306
+db_cloner_remote_db_host: 127.0.0.1
+
+# NO TRAILING SLASH!!!!
+db_cloner_sql_dump_path: /tmp
+
